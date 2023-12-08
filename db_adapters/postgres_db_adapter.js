@@ -1,6 +1,7 @@
-class Abstract_DB_Adapter {
+class Postgres_DB_Adapter extends Abstract_DB_Adapter {
   constructor(config) {
-    // Implementation goes here
+      super(config);
+      this.type = 'postgres';
   }
 
   InsertFile (internalPath) {
@@ -20,8 +21,6 @@ class Abstract_DB_Adapter {
   GetFileId (internalPath) {
     // Implementation goes here
   }
-
-  
 }
 
-export default Abstract_DB_Adapter;
+export default Postgres_DB_Adapter;

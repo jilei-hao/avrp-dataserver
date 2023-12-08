@@ -8,7 +8,7 @@ class FileHelper {
         this.adapter = new LocalFSAdapter();
         break;
       default:
-        throw new Error(`Unknown adapter type: ${config.adapter_type}`);
+        throw new Error(`Unknown fs adapter type: ${config.adapter_type}`);
     }
 
     this.data_root_dir = config.data_root_dir;

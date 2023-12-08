@@ -8,7 +8,7 @@
     "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "PORT=7070 nodemon app.js",
-    "reset-db": "bash sql/reset-db.sh"
+    "reset-db": "bash testing/reset-db.sh"
   },
   "author": "",
   "license": "ISC",
