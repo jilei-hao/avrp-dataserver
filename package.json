@@ -1,0 +1,21 @@
+{
+  "name": "avrp-dataserver",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Stores, manages and serves data for the avrp system",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "PORT=7070 nodemon app.js",
+    "reset-db": "bash sql/reset-db.sh"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "multer": "^1.4.5-lts.1"
+  }
+}

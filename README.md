@@ -1,2 +1,3 @@
-# avrp-imageserver
-Stores, manages and serves image data for the avrp system
+# avrp-dataserver
+
+Stores, manages and serves data for the avrp system
