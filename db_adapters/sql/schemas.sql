@@ -12,7 +12,7 @@ create table if not exists files (
     id serial primary key,
     name varchar(255) not null,
     folder_id int references folders(id) on delete cascade,
-    size_in_byte int not null,
+    size_in_byte bigint not null,
     created_at timestamp not null default now(),
     last_modified_at timestamp not null default now()
 );
@@ -26,6 +26,8 @@ create table if not exists users (
     last_modified_at timestamp not null default now()
 );
 
+
 -- backout sql
 -- drop table files;
 -- drop table folders;
+-- drop table users;

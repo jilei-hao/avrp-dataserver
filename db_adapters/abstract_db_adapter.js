@@ -20,7 +20,6 @@ class Abstract_DB_Adapter {
   GetFileId (internalPath) {
     // Implementation goes here
   }
-
   
 }
 

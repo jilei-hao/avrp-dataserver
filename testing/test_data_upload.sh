@@ -1,6 +1,6 @@
 
 # Send a POST request to the data route with local file
-for f in ./external_data/*.nii.gz; do
+for f in ./testing/external_data/*.nii.gz; do
   curl -X POST -H "Content-Type: multipart/form-data" \
   -F "file=@$f" \
   -F "path=." \

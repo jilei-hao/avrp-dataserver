@@ -1,7 +1,17 @@
+import { Pool } from 'pg';
+
+
 class Postgres_DB_Adapter extends Abstract_DB_Adapter {
   constructor(config) {
-      super(config);
-      this.type = 'postgres';
+    super(config);
+    this.type = 'postgres';
+    this.pool = new Pool({
+      host: config.host,
+      port: config.port,
+      database: config.database,
+      user: config.user,
+      password: config.password,
+    });
   }
 
   InsertFile (internalPath) {
