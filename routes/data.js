@@ -1,5 +1,5 @@
 import express from 'express';
-import LocalFSAdapter from '../fs_adapters/localFS_adapter.js';
+import FileHelper from '../fs_adapters/file_helper.js';
 import dotenv from 'dotenv';
 import multer from 'multer';
 
@@ -13,8 +13,9 @@ const router = express.Router();
 const upload = multer({ dest: process.env.UPLOAD_FILE_CACHE || '../testing/upload_file_cache'});
 
 // create a new instance of our LocalFSAdapter
-const fsAdapter = new LocalFSAdapter({
-  root_dir: process.env.DATA_ROOT_DIR || '../testing/data_root_dir',
+const fileHelper = new FileHelper({
+  adapter_type: process.env.FILE_ADAPTER_TYPE || 'local',
+  data_root_dir: process.env.DATA_ROOT_DIR || '../testing/data_root_dir',
 });
 
 // Middleware to parse JSON requests
@@ -27,7 +28,7 @@ router.post('/', upload.single('file'), async (req, res) => {
   console.log(req.file);
 
   // Move the uploaded file from temporary storage to the data root dir
-  await fsAdapter.importFile(req.file.path, req.body.path, req.body.filename);
+  await fileHelper.importFile(req.file.path, req.body.path, req.body.filename);
 
   res.status(200).send("File uploaded successfully");
 });

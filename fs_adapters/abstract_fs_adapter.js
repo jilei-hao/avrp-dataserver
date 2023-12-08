@@ -3,30 +3,38 @@ class AbstractFSAdapter {
     // Implementation goes here
   }
 
-  // Create a file
-  createFile(relativePath, content) {
+  // CRUD methods
+  // -- Create a file
+  createFile(path, content) {
     // Implementation goes here
   }
 
-  // Move a file
-  importFile(externalPath, relativePath, filename) {
+  // -- Read a file
+  readFile(path) {
     // Implementation goes here
   }
 
-  // Read a file
-  readFile(relativePath) {
+  // -- Update a file
+  updateFile(path, content) {
     // Implementation goes here
   }
 
-  // Update a file
-  updateFile(relativePath, content) {
+  // -- Delete a file
+  deleteFile(path) {
     // Implementation goes here
   }
 
-  // Delete a file
-  deleteFile(relativePath) {
+  // Utility methods
+  // -- Move a file
+  moveFile(oldPath, newPath) {
     // Implementation goes here
   }
+
+  // -- Check if a file exists
+  checkFileExists(path) {
+    // Implementation goes here
+  }
+
 
 }
 

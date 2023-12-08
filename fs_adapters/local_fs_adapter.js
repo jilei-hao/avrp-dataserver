@@ -1,18 +1,15 @@
 
 import AbstractFSAdapter from "./abstract_fs_adapter.js";
 import fs from 'fs';
-import path from 'path';
 
 class LocalFSAdapter extends AbstractFSAdapter {
   constructor(config) {
     super(config);
-    this.root_dir = config.root_dir;
   };
 
-  async createFile(relativePath, content) {
-    const fullPath = path.join(this.root_dir, relativePath);
+  async createFile(path, content) {
     return new Promise((resolve, reject) => {
-      fs.writeFile(fullPath, content, 'utf8', (err) => {
+      fs.writeFile(path, content, 'utf8', (err) => {
         if (err) {
           reject(err);
         } else {
@@ -22,10 +19,9 @@ class LocalFSAdapter extends AbstractFSAdapter {
     });
   };
 
-  async importFile(externalPath, relativePath, filename) {
-    const newFullPath = path.join(this.root_dir, relativePath, filename);
+  async moveFile(oldPath, newPath) {
     return new Promise((resolve, reject) => {
-      fs.rename(externalPath, newFullPath, (err) => {
+      fs.rename(oldPath, newPath, (err) => {
         if (err) {
           reject(err);
         } else {
@@ -35,10 +31,9 @@ class LocalFSAdapter extends AbstractFSAdapter {
     });
   }
 
-  async readFile(relativePath) {
-    const fullPath = path.join(this.root_dir, relativePath);
+  async readFile(path) {
     return new Promise((resolve, reject) => {
-      fs.readFile(fullPath, 'utf8', (err, data) => {
+      fs.readFile(path, 'utf8', (err, data) => {
         if (err) {
           reject(err);
         } else {
@@ -49,10 +44,9 @@ class LocalFSAdapter extends AbstractFSAdapter {
   };
 
 
-  async updateFile(relativePath, newData) {
-    const fullPath = path.join(this.root_dir, relativePath);
+  async updateFile(path, newData) {
     return new Promise((resolve, reject) => {
-      fs.writeFile(fullPath, newData, 'utf8', (err) => {
+      fs.writeFile(path, newData, 'utf8', (err) => {
         if (err) {
           reject(err);
         } else {
@@ -62,10 +56,9 @@ class LocalFSAdapter extends AbstractFSAdapter {
     });
   }
 
-  async deleteFile(relativePath) {
-    const fullPath = path.join(this.root_dir, relativePath);
+  async deleteFile(path) {
     return new Promise((resolve, reject) => {
-      fs.unlink(fullPath, (err) => {
+      fs.unlink(path, (err) => {
         if (err) {
           reject(err);
         } else {
