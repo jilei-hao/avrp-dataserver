@@ -1,15 +1,14 @@
 -- language: postgresql
--- function to insert a file into the database
-create or replace function fn_insert_file(
+-- function to check if a file exists
+create or replace function fn_is_file_exists(
   p_folder_path varchar(255),
-  p_name varchar(255),
-  p_size_in_bytes bigint
+  p_name varchar(255)
 )
-returns int
+returns boolean
 as $$
 declare
-  v_id int;
   v_folder_id int;
+  v_count int;
 begin
   -- call fn_parse_folderr_id to get folder_id
   v_folder_id := fn_parse_folder_id(p_folder_path);
@@ -24,10 +23,8 @@ begin
     raise exception 'file name cannot be null';
   end if;
 
-  -- insert a file into the database
-  insert into files (name, folder_id, size_in_bytes)
-  values (p_name, v_folder_id, p_size_in_bytes)
-  returning id into v_id;
-  return v_id;
+  -- check if file exists
+  select count(*) into v_count from files where name = p_name and folder_id = v_folder_id;
+  return v_count > 0;
 end;
 $$ language plpgsql;

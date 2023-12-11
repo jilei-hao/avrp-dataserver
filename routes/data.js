@@ -2,6 +2,7 @@ import express from 'express';
 import FileHelper from '../fs_adapters/file_helper.js';
 import dotenv from 'dotenv';
 import multer from 'multer';
+import DBHelper from '../db_adapters/db_helper.js';
 
 // read in environment variables from .env file
 dotenv.config();
@@ -18,6 +19,16 @@ const fileHelper = new FileHelper({
   data_root_dir: process.env.DATA_ROOT_DIR || '../testing/data_root_dir',
 });
 
+// create a new instance of our DBHelper
+const dbHelper = new DBHelper({
+  adapter_type: process.env.DB_ADAPTER_TYPE || 'postgres',
+  host: process.env.DB_HOST || 'localhost',
+  port: process.env.DB_PORT || 5432,
+  database: 'data-server-db',
+  user: process.env.DB_USER || 'avrpdev',
+  password: process.env.DB_PASSWORD || 'avrpdev',
+});
+
 // Middleware to parse JSON requests
 router.use(express.json());
 
@@ -27,10 +38,21 @@ router.post('/', upload.single('file'), async (req, res) => {
 
   console.log(req.file);
 
-  // Move the uploaded file from temporary storage to the data root dir
-  await fileHelper.importFile(req.file.path, req.body.path, req.body.filename);
+  // Check file existence in the database
+  const isFileExists = await dbHelper.IsFileExists(req.body.path, req.body.filename);
+  if (isFileExists) {
+    res.status(409).send("File already exists");
+    return;
+  } else {
+    // Insert the file meta into the database
+    const fileId = await dbHelper.InsertFile(req.body.path, req.body.filename, req.file.size);
+    console.log("file_id: " + fileId);
 
-  res.status(200).send("File uploaded successfully");
+    // Move the uploaded file from temporary storage to the data root dir
+    await fileHelper.importFile(req.file.path, req.body.path, req.body.filename);
+
+    res.status(200).send("File uploaded successfully");
+  }
 });
 
 router.get('/', async (req, res) => {

@@ -133,3 +133,7 @@ dist
 .env.dev
 .env.prod
 .env.local
+
+# upload file cache
+.testing/upload_file_cache/
+

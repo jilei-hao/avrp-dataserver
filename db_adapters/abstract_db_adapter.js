@@ -1,11 +1,15 @@
-class Abstract_DB_Adapter {
+class AbstractDBAdapter {
   constructor(config) {
     // Implementation goes here
   }
 
-  InsertFile (internalPath) {
+  InsertFile (folder, filename, size_in_bytes) {
     // Implementation goes here
     // return the id of the newly created record
+  }
+
+  IsFileExists (internalPath, filename) {
+    // Implementation goes here
   }
 
   DeleteFile (fileId) {
@@ -23,4 +27,4 @@ class Abstract_DB_Adapter {
   
 }
 
-export default Abstract_DB_Adapter;
+export default AbstractDBAdapter;
