@@ -18,6 +18,10 @@ class DBHelper {
   async IsFileExists(internalPath, filename) {
     return this.adapter.IsFileExists(internalPath, filename);
   }
+
+  async GetFileInfo(fileId) {
+    return this.adapter.GetFileInfo(fileId);
+  }
 }
 
 export default DBHelper;

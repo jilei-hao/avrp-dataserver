@@ -6,7 +6,8 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "test": "bash testing/test_data_upload.sh",
+    "test-upload": "bash testing/test_data_upload.sh",
+    "test-download": "bash testing/test_data_download.sh",
     "dev": "PORT=7070 nodemon app.js",
     "reset-db": "bash testing/reset-db.sh"
   },

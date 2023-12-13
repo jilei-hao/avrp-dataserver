@@ -136,4 +136,5 @@ dist
 
 # upload file cache
 .testing/upload_file_cache/
+.testing/download_file_cache/
 

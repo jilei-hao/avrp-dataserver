@@ -20,7 +20,6 @@ class PostgresDBAdapter extends AbstractDBAdapter {
     // call function to insert file into database
     return this.pool.query('SELECT fn_insert_file($1, $2, $3)', [folder, filename, size_in_bytes])
       .then(res => {
-        console.log(res.rows[0]);
         return res.rows[0].fn_insert_file;
       })
       .catch(err => {
@@ -28,11 +27,10 @@ class PostgresDBAdapter extends AbstractDBAdapter {
       });
   }
 
-  async IsFileExists (internalPath, filename) {
+  async IsFileExists (folder, filename) {
     // call function to check existence of file in database
-    return this.pool.query('SELECT fn_is_file_exists($1, $2)', [internalPath, filename])
+    return this.pool.query('SELECT fn_is_file_exists($1, $2)', [folder, filename])
       .then(res => {
-        console.log(res.rows[0]);
         return res.rows[0].fn_is_file_exists;
       })
       .catch(err => {
@@ -51,6 +49,23 @@ class PostgresDBAdapter extends AbstractDBAdapter {
 
   GetFileId (internalPath) {
     // Implementation goes here
+  }
+
+  async GetFileInfo (fileId) {
+    return this.pool.query('SELECT * FROM fn_get_file_info($1)', [fileId])
+      .then(res => {
+        if (res.rows.length == 0) {
+          throw new Error(`File not found: ${fileId}`);
+        }
+        // return the result as an object
+        return {
+          folder: res.rows[0].folder_path,
+          filename: res.rows[0].name,
+        };
+      })
+      .catch(err => {
+        console.log(err.stack);
+      });
   }
 }
 

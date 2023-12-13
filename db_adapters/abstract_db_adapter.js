@@ -24,6 +24,10 @@ class AbstractDBAdapter {
   GetFileId (internalPath) {
     // Implementation goes here
   }
+
+  GetFileInfo (fileId) {
+    // Implementation goes here
+  }
   
 }
 

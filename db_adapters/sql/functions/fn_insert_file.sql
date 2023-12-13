@@ -16,7 +16,7 @@ begin
 
   -- if folder_id is null then use root folder
   if v_folder_id is null then
-    select id into v_folder_id from folders where name = 'root';
+    select id into v_folder_id from folders where name = '.';
   end if;
 
   -- file name cannot be null

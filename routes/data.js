@@ -34,14 +34,14 @@ router.use(express.json());
 
 // API endpoint to validate a username
 router.post('/', upload.single('file'), async (req, res) => {
-  console.log("[/data(post)]: data root dir: " + process.env.DATA_ROOT_DIR);
-
-  console.log(req.file);
+  // console.log(req.file);
 
   // Check file existence in the database
   const isFileExists = await dbHelper.IsFileExists(req.body.path, req.body.filename);
   if (isFileExists) {
-    res.status(409).send("File already exists");
+    res.status(409).send("File already exists. Send a PUT request to update the file.");
+    // clean up the upload cache
+    await fileHelper.deleteFile(req.file.path);
     return;
   } else {
     // Insert the file meta into the database
@@ -51,12 +51,42 @@ router.post('/', upload.single('file'), async (req, res) => {
     // Move the uploaded file from temporary storage to the data root dir
     await fileHelper.importFile(req.file.path, req.body.path, req.body.filename);
 
-    res.status(200).send("File uploaded successfully");
+    res.status(200).send({ fileId }); // Send fileId back as response
   }
 });
 
 router.get('/', async (req, res) => {
-  console.log("/data: get");
+  console.log("/data: get", req.query);
+
+  // parse id out of the request
+  const fileId = req.query.id;
+  if (!fileId) {
+    res.status(400).send("Missing parameter: id");
+    return;
+  }
+
+  // Preparing the response
+  try {
+    const {folder, filename} = await dbHelper.GetFileInfo(fileId);
+
+    if (!folder || !filename) {
+      res.status(404).send("File not found");
+      return;
+    }
+
+    // Attach the image from folder
+    const fileData = await fileHelper.readFile(folder, filename);
+
+    // Set the appropriate headers for the response
+    res.setHeader('Content-Type', 'application/octet-stream');
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+
+    // Send the FormData object as the response
+    res.status(200).send(fileData);
+  } catch (e) {
+    res.status(404).send(`Error querying the database: ${e.message}`);
+    return;
+  }
 });
 
 export default router;

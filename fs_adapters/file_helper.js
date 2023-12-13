@@ -14,18 +14,34 @@ class FileHelper {
     this.data_root_dir = config.data_root_dir;
   }
 
-  _absolutePath(internalPath) {
-    return path.join(this.data_root_dir, internalPath);
+  _absolutePath(folder) {
+    return path.join(this.data_root_dir, folder);
   }
 
-  async importFile(externalPath, internalPath, filename) {
-    const fullPath = this._absolutePath(path.join(internalPath, filename));
+  async importFile(externalPath, folder, filename) {
+    const fullPath = this._absolutePath(path.join(folder, filename));
     return this.adapter.moveFile(externalPath, fullPath);
   }
 
-  async checkFileExists(internalPath) {
-    return this.adapter.checkFileExists(this._absolutePath(internalPath));
+  async checkFileExists(folder) {
+    return this.adapter.checkFileExists(this._absolutePath(folder));
   }
+
+  async readFile(folder, filename) {
+    return this.adapter.readFile(this._absolutePath(path.join(folder, filename)));
+  }
+  
+  // delete a file by absolute path
+  async deleteFile(absolutePath) {
+    return this.adapter.deleteFile(absolutePath);
+  }
+
+  // delete an internal file
+  async deleteInternalFile(folder, filename) {
+    const fullPath = this._absolutePath(path.join(folder, filename));
+    return this.adapter.deleteFile(fullPath);
+  }
+
 }
 
 export default FileHelper;

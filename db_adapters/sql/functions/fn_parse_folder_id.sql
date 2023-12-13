@@ -1,9 +1,3 @@
--- create table if not exists folders (
---     id serial primary key,
---     name varchar(255) not null,
---     parent_id int references folders(id) on delete cascade
--- );
-
 -- language postgresql
 -- function to return folder id given a folder path
 create or replace function fn_parse_folder_id(
@@ -36,7 +30,7 @@ begin
     if v_folder_name is not null then
       if v_folder_id is null then
         -- if folder_id is null then use root folder
-        select id into v_folder_id from folders where name = 'root';
+        select id into v_folder_id from folders where name = '.';
       end if;
 
       -- get folder_id

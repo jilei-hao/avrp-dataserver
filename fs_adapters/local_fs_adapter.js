@@ -9,7 +9,7 @@ class LocalFSAdapter extends AbstractFSAdapter {
 
   async createFile(path, content) {
     return new Promise((resolve, reject) => {
-      fs.writeFile(path, content, 'utf8', (err) => {
+      fs.writeFile(path, content, (err) => {
         if (err) {
           reject(err);
         } else {
@@ -33,7 +33,7 @@ class LocalFSAdapter extends AbstractFSAdapter {
 
   async readFile(path) {
     return new Promise((resolve, reject) => {
-      fs.readFile(path, 'utf8', (err, data) => {
+      fs.readFile(path, (err, data) => {
         if (err) {
           reject(err);
         } else {
@@ -46,7 +46,7 @@ class LocalFSAdapter extends AbstractFSAdapter {
 
   async updateFile(path, newData) {
     return new Promise((resolve, reject) => {
-      fs.writeFile(path, newData, 'utf8', (err) => {
+      fs.writeFile(path, newData, (err) => {
         if (err) {
           reject(err);
         } else {

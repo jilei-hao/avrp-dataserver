@@ -5,22 +5,22 @@ class AbstractFSAdapter {
 
   // CRUD methods
   // -- Create a file
-  createFile(path, content) {
+  createFile(path, filename, content) {
     // Implementation goes here
   }
 
   // -- Read a file
-  readFile(path) {
+  readFile(path, filename) {
     // Implementation goes here
   }
 
   // -- Update a file
-  updateFile(path, content) {
+  updateFile(path, filename, content) {
     // Implementation goes here
   }
 
   // -- Delete a file
-  deleteFile(path) {
+  deleteFile(path, filename) {
     // Implementation goes here
   }
 
