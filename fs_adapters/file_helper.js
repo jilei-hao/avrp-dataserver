@@ -42,6 +42,12 @@ class FileHelper {
     return this.adapter.deleteFile(fullPath);
   }
 
+  // create a directory
+  async createDir(folder) {
+    console.log("createDir: ", folder, this._absolutePath(folder));
+    return this.adapter.createDir(this._absolutePath(folder));
+  }
+
 }
 
 export default FileHelper;

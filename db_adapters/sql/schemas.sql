@@ -3,6 +3,8 @@
 create table if not exists folders (
     id serial primary key,
     name varchar(255) not null,
+    created_at timestamp not null default now(),
+    last_modified_at timestamp not null default now(),
     parent_id int references folders(id) on delete cascade
 );
 

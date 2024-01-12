@@ -22,6 +22,14 @@ class DBHelper {
   async GetFileInfo(fileId) {
     return this.adapter.GetFileInfo(fileId);
   }
+
+  async CreateFolder(internalPath) {
+    return this.adapter.CreateFolder(internalPath);
+  }
+
+  async IsFolderExists(internalPath) {
+    return this.adapter.IsFolderExists(internalPath);
+  }
 }
 
 export default DBHelper;
