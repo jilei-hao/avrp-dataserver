@@ -35,6 +35,7 @@ router.use(express.json());
 // API endpoint to validate a username
 router.post('/', upload.single('file'), async (req, res) => {
   // console.log(req.file);
+  console.log("[/data:Post] ");
 
   // Check file existence in the database
   const isFileExists = await dbHelper.IsFileExists(req.body.path, req.body.filename);
@@ -44,6 +45,23 @@ router.post('/', upload.single('file'), async (req, res) => {
     await fileHelper.deleteFile(req.file.path);
     return;
   } else {
+    // Check if path exists
+    const isFolderExists = await dbHelper.IsFolderExists(req.body.path);
+    console.log("isFolderExists: ", isFolderExists);
+
+    if (!isFolderExists) {
+      if (!req.body.create_folder_if_not_exists) {
+        res.status(400).send("Path does not exist. Set create_path_if_not_exists to true to create the path.");
+        // clean up the upload cache
+        await fileHelper.deleteFile(req.file.path);
+        return;
+      }
+
+      // create the path
+      await dbHelper.CreateFolder(req.body.path);
+      await fileHelper.createDir(req.body.path);
+    }
+
     // Insert the file meta into the database
     const fileId = await dbHelper.InsertFile(req.body.path, req.body.filename, req.file.size);
     console.log("file_id: " + fileId);

@@ -35,6 +35,11 @@ class AbstractFSAdapter {
     // Implementation goes here
   }
 
+  // -- Create a directory
+  createDir(path) {
+    // Implementation goes here
+  }
+
 
 }
 

@@ -67,6 +67,29 @@ class PostgresDBAdapter extends AbstractDBAdapter {
         console.log(err.stack);
       });
   }
+
+  async CreateFolder (internalPath) {
+    // call function to create folder in database
+    return this.pool.query('SELECT fn_create_folder($1)', [internalPath])
+      .then(res => {
+        return res.rows[0].fn_create_folder;
+      })
+      .catch(err => {
+        console.log(err.stack);
+      });
+  }
+
+  async IsFolderExists (internalPath) {
+    console.log("[IsFolderExists] internalPath: ", internalPath)
+    // call function to check existence of folder in database
+    return this.pool.query('SELECT fn_is_folder_exists($1)', [internalPath])
+      .then(res => {
+        return res.rows[0].fn_is_folder_exists;
+      })
+      .catch(err => {
+        console.log(err.stack);
+      });
+  }
 }
 
 export default PostgresDBAdapter;

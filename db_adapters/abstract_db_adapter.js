@@ -28,6 +28,14 @@ class AbstractDBAdapter {
   GetFileInfo (fileId) {
     // Implementation goes here
   }
+
+  CreateFolder (internalPath) {
+    // Implementation goes here
+  }
+
+  IsFolderExists (internalPath) {
+    // Implementation goes here
+  }
   
 }
 

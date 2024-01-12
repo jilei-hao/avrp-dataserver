@@ -135,6 +135,7 @@ dist
 .env.local
 
 # upload file cache
-.testing/upload_file_cache/
-.testing/download_file_cache/
+testing/upload_file_cache/
+testing/download_file_cache/
+testing/data_root_dir/
 
