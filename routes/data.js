@@ -38,39 +38,51 @@ router.post('/', upload.single('file'), async (req, res) => {
   console.log("[/data:Post] ");
 
   // Check file existence in the database
-  const isFileExists = await dbHelper.IsFileExists(req.body.path, req.body.filename);
-  if (isFileExists) {
+  const fileId = await dbHelper.GetFileId(req.body.folder, req.body.filename);
+  if (fileId !== 0) {
     res.status(409).send("File already exists. Send a PUT request to update the file.");
     // clean up the upload cache
     await fileHelper.deleteFile(req.file.path);
     return;
   } else {
     // Check if path exists
-    const isFolderExists = await dbHelper.IsFolderExists(req.body.path);
-    console.log("isFolderExists: ", isFolderExists);
+    const folderId = await dbHelper.GetFolderId(req.body.folder);
+    console.log("-- folderId: ", folderId);
 
-    if (!isFolderExists) {
+    if (folderId === 0) {
       if (!req.body.create_folder_if_not_exists) {
-        res.status(400).send("Path does not exist. Set create_path_if_not_exists to true to create the path.");
+        res.status(400).send("Folder does not exist. Set create_path_if_not_exists to true to create the path.");
         // clean up the upload cache
         await fileHelper.deleteFile(req.file.path);
         return;
       }
 
-      // create the path
-      await dbHelper.CreateFolder(req.body.path);
-      await fileHelper.createDir(req.body.path);
+      // create folder
+      await dbHelper.CreateFolder(req.body.folder);
+      await fileHelper.createDir(req.body.folder);
     }
 
     // Insert the file meta into the database
-    const fileId = await dbHelper.InsertFile(req.body.path, req.body.filename, req.file.size);
-    console.log("file_id: " + fileId);
+    const fileId = await dbHelper.InsertFile(req.body.folder, req.body.filename, req.file.size);
+    console.log("-- fileId: " + fileId);
 
     // Move the uploaded file from temporary storage to the data root dir
-    await fileHelper.importFile(req.file.path, req.body.path, req.body.filename);
+    await fileHelper.importFile(req.file.path, req.body.folder, req.body.filename);
 
     res.status(200).send({ fileId }); // Send fileId back as response
   }
+});
+
+router.head('/', async (req, res) => {
+  console.log("/data: head", req.query);
+  const fileId = await dbHelper.GetFileId(req.query.folder, req.query.filename);
+  if (fileId !== 0) {
+    res.setHeader('X-File-Id', fileId);
+    res.status(200).end();
+  } else {
+    res.status(404).end();
+  }
+  console.log("-- end of /data: head");
 });
 
 router.get('/', async (req, res) => {
@@ -106,5 +118,7 @@ router.get('/', async (req, res) => {
     return;
   }
 });
+
+
 
 export default router;

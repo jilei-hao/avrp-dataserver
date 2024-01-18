@@ -27,17 +27,6 @@ class PostgresDBAdapter extends AbstractDBAdapter {
       });
   }
 
-  async IsFileExists (folder, filename) {
-    // call function to check existence of file in database
-    return this.pool.query('SELECT fn_is_file_exists($1, $2)', [folder, filename])
-      .then(res => {
-        return res.rows[0].fn_is_file_exists;
-      })
-      .catch(err => {
-        console.log(err.stack);
-      });
-  }
-
   DeleteFile (fileId) {
     // Implementation goes here
   }
@@ -47,8 +36,36 @@ class PostgresDBAdapter extends AbstractDBAdapter {
     // Implementation goes here
   }
 
-  GetFileId (internalPath) {
-    // Implementation goes here
+  // returns 0 if file does not exist, id if file exists
+  async GetFileId (folder, filename) {
+    console.log("[postgres_db_adapter::GetFileId] folder: ", folder, ", filename: ", filename);
+    return this.pool.query('SELECT * FROM fn_get_file_id($1, $2)', [folder, filename])
+      .then(res => {
+        if (res.rows.length == 0) {
+          return 0;
+        }
+
+        return res.rows[0].fn_get_file_id;
+      })
+      .catch(err => {
+        console.log(err.stack);
+      });
+  }
+
+  // returns 0 if folder does not exist, id if folder exists
+  async GetFolderId (folder) {
+    console.log("[postgres_db_adapter::GetFolderId] folder: ", folder);
+    return this.pool.query('SELECT * FROM fn_get_folder_id_from_path($1)', [folder])
+      .then(res => {
+        if (res.rows.length == 0) {
+          return 0;
+        }
+
+        return res.rows[0].fn_get_folder_id_from_path;
+      })
+      .catch(err => {
+        console.log(err.stack);
+      });
   }
 
   async GetFileInfo (fileId) {
@@ -68,9 +85,9 @@ class PostgresDBAdapter extends AbstractDBAdapter {
       });
   }
 
-  async CreateFolder (internalPath) {
+  async CreateFolder (folder) {
     // call function to create folder in database
-    return this.pool.query('SELECT fn_create_folder($1)', [internalPath])
+    return this.pool.query('SELECT fn_create_folder($1)', [folder])
       .then(res => {
         return res.rows[0].fn_create_folder;
       })
@@ -79,17 +96,6 @@ class PostgresDBAdapter extends AbstractDBAdapter {
       });
   }
 
-  async IsFolderExists (internalPath) {
-    console.log("[IsFolderExists] internalPath: ", internalPath)
-    // call function to check existence of folder in database
-    return this.pool.query('SELECT fn_is_folder_exists($1)', [internalPath])
-      .then(res => {
-        return res.rows[0].fn_is_folder_exists;
-      })
-      .catch(err => {
-        console.log(err.stack);
-      });
-  }
 }
 
 export default PostgresDBAdapter;

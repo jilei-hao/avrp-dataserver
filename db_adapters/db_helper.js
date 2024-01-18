@@ -15,20 +15,22 @@ class DBHelper {
     return this.adapter.InsertFile(folder, filename, size_in_bytes);
   }
 
-  async IsFileExists(internalPath, filename) {
-    return this.adapter.IsFileExists(internalPath, filename);
+  // returns 0 if file does not exist, id if file exists
+  async GetFileId(folder, filename) {
+    return this.adapter.GetFileId(folder, filename);
   }
 
   async GetFileInfo(fileId) {
     return this.adapter.GetFileInfo(fileId);
   }
 
-  async CreateFolder(internalPath) {
-    return this.adapter.CreateFolder(internalPath);
+  async CreateFolder(folder) {
+    return this.adapter.CreateFolder(folder);
   }
 
-  async IsFolderExists(internalPath) {
-    return this.adapter.IsFolderExists(internalPath);
+  // returns 0 if folder does not exist, id if folder exists
+  async GetFolderId(folder) {
+    return this.adapter.GetFolderId(folder);
   }
 }
 

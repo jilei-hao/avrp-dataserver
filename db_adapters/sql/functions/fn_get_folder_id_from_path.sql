@@ -1,6 +1,6 @@
--- language postgresql
+-- language plpgsql
 -- function to return folder id given a folder path
-create or replace function fn_parse_folder_id(
+create or replace function fn_get_folder_id_from_path(
   p_folder_path varchar(255)
 )
 returns int

@@ -8,20 +8,16 @@ class AbstractDBAdapter {
     // return the id of the newly created record
   }
 
-  IsFileExists (internalPath, filename) {
-    // Implementation goes here
-  }
-
   DeleteFile (fileId) {
     // Implementation goes here
   }
 
   // when a file is moved, we need to update the internal path
-  UpdateFile (fileId, newInternalPath) {
+  UpdateFile (fileId, newFolder) {
     // Implementation goes here
   }
 
-  GetFileId (internalPath) {
+  GetFileId (folder, filename) {
     // Implementation goes here
   }
 
@@ -29,11 +25,11 @@ class AbstractDBAdapter {
     // Implementation goes here
   }
 
-  CreateFolder (internalPath) {
+  CreateFolder (folder) {
     // Implementation goes here
   }
 
-  IsFolderExists (internalPath) {
+  GetFolderId (folder) {
     // Implementation goes here
   }
   
