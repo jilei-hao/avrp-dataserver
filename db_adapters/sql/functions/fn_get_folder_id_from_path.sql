@@ -40,6 +40,10 @@ begin
     v_folder_path_array_index := v_folder_path_array_index + 1;
   end loop;
 
+  if v_folder_id is null then
+    return 0;
+  end if;
+
   return v_folder_id;
 end;
 $$ language plpgsql;

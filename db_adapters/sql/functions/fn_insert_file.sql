@@ -12,11 +12,11 @@ declare
   v_folder_id int;
 begin
   -- call fn_parse_folderr_id to get folder_id
-  v_folder_id := fn_parse_folder_id(p_folder_path);
+  v_folder_id := fn_get_folder_id_from_path(p_folder_path);
 
-  -- if folder_id is null then use root folder
-  if v_folder_id is null then
-    select id into v_folder_id from folders where name = '.';
+  -- if folder_id is null then raise exception
+  if v_folder_id is null or v_folder_id = 0 then
+    raise exception 'invalid folder path: %', p_folder_path;
   end if;
 
   -- file name cannot be null
