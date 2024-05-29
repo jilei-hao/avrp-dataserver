@@ -6,7 +6,7 @@ const app = express();
 
 // Configure CORS middleware
 const corsOptions = {
-  origin: 'http://localhost:3030', // Replace with your allowed origin(s)
+  origin: ['http://localhost:3030', 'http://localhost:5173'],
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true, // enable set cookie with CORS
   optionsSuccessStatus: 204,

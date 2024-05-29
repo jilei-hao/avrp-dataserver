@@ -48,10 +48,11 @@ router.post('/', upload.single('file'), async (req, res) => {
     // Check if path exists
     const folderId = await dbHelper.GetFolderId(req.body.folder);
     console.log("-- folderId: ", folderId);
+    console.log("-- create_folder_if_not_exists: ", req.body.create_folder_if_not_exists);
 
     if (folderId === 0) {
       if (!req.body.create_folder_if_not_exists) {
-        res.status(400).send("Folder does not exist. Set create_path_if_not_exists to true to create the path.");
+        res.status(400).send("Folder does not exist. Set create_folder_if_not_exists to true to create the path.");
         // clean up the upload cache
         await fileHelper.deleteFile(req.file.path);
         return;

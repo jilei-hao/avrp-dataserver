@@ -17,3 +17,6 @@ done
 
 # Apply create user
 psql -p 7071 -U jileihao -d data-server-db -f db_adapters/sql/create_user.sql
+
+# Clean up the file storage
+rm -rf testing/data_root_dir/*
